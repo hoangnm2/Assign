@@ -65,7 +65,7 @@ class Book {
 		
 		
 		for (int i=0; i<library.getBooks().size(); i++) {
-			final Book bk = library.getBooks().get(i);
+			final Book bk = (Book) library.getBooks().get(i);
 			if (bk != null && bookName.equalsIgnoreCase(bk.getBookName())) {
 				bk.rs = null;
 				library.editBook(i, bk);
@@ -102,7 +102,8 @@ class Book {
 	// TODO: This function need to be revisit
 	public boolean isRented(Library l) {
 		// The book has been rented and not yet returned
-		for (final Book book : l.getBooks()) {
+		for (int i=0; i<l.getBooks().size(); i++) {
+			final Book book = (Book) l.getBooks().get(i);
 			if (book == null || !book.getBookName().equals(this.getBookName())) {
 				continue;
 			}

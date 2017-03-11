@@ -1,19 +1,20 @@
 import java.util.LinkedList;
 
-public class Library implements MaxTagValue {
+public class Library<T> implements MaxTagValue {
 
 	String libraryName;
-	LinkedList<Book> books;
+	LinkedList<T> books;
 
 	public Library(String libraryName) {
 		this.libraryName = libraryName;
-		books = new LinkedList<Book>();
+		books = new LinkedList<T>();
 	}
 
 	// Get max value tag
 	public int findMaximumValueTag() {
 		int maxElement = -100;
-		for (final Book book : books) {
+		for (int i=0; i<books.size(); i++) {
+			final Book book = (Book) books.get(i);
 			if (book.getValueTag() > maxElement) {
 				maxElement = book.getValueTag();
 			}
@@ -45,7 +46,7 @@ public class Library implements MaxTagValue {
 		}
 
 		for (int i = 0; i < books.size(); i++) {
-			final Book book = books.get(i);
+			final Book book = (Book) books.get(i);
 			// In case library owned the book
 			if (book != null && wanted.getBookName().equalsIgnoreCase(book.getBookName())) {
 				boolean isRented = book.rentBook(requestDate, dueDate, this);
@@ -64,15 +65,15 @@ public class Library implements MaxTagValue {
 		this.libraryName = libraryName;
 	}
 
-	public LinkedList<Book> getBooks() {
+	public LinkedList<T> getBooks() {
 		return books;
 	}
 
-	public void addBook(Book book) {
+	public void addBook(T book) {
 		this.books.add(book);
 	}
 	
-	public void editBook(int index, Book book) {
+	public void editBook(int index, T book) {
 		books.set(index, book);
 	}
 
@@ -80,7 +81,8 @@ public class Library implements MaxTagValue {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Library = ").append(libraryName).append("\n").append("[\n");
-		for (final Book bk : books) {
+		for (int i=0; i<books.size(); i++) {
+			final Book bk = (Book) books.get(i);
 			sb.append(bk).append("\n");
 		}
 		sb.append("]\n");

@@ -59,7 +59,8 @@ public class Libraries {
 		}
 		for (final Library lib : libraries) {
 			//TODO: how 2 books considered equal
-			for (final Book bk : lib.getBooks()) {
+			for (int i=0; i<lib.getBooks().size(); i++) {
+				final Book bk = (Book) lib.getBooks().get(i);
 				if (bk != null && book.getBookName().equalsIgnoreCase(bk.getBookName())) {
 					//if (!bk.isRented(lib)) {
 						return lib;
