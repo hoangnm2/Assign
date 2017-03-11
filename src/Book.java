@@ -75,9 +75,20 @@ class Book {
 
 	// return the date when this book is available
 	public String availableDate(Library<Book> library) {
-		if (rs == null)
-			return Helper.getCurrentDate();
-		return rs.dueDate;
+		for (int i=0; i<library.getBooks().size(); i++) {
+			final Book book = (Book) library.getBooks().get(i);
+			if (book != null && book.getBookName() != null && book.getBookName().equals(bookName)) {
+				// If rent settings is not set, return current date
+				if (book.rs == null) {
+					return Helper.getCurrentDate();
+				} else {
+					return book.rs.dueDate;
+				}
+			}
+		}
+		
+		// Book doesnot exist
+		return null;
 	}
 
 	// returns true if the current date is greater than the due date

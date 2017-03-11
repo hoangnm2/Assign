@@ -31,7 +31,7 @@ public class Main {
 		 */
 
 		System.out.println("\n\n *" + " TASK 3 " + "*");
-		
+
 		// Ask for a book that is in a library inventory
 		Book wantedBook = new Book("Essentials of Database Management", 20);
 		Library<Book> library = ls.isThereBookInLibraries(wantedBook);
@@ -51,7 +51,7 @@ public class Main {
 				}
 				System.out.println(library);
 			}
-			
+
 			{
 				// Issue the same borrow request and print the book object
 				boolean isRented = library.rentRequest(wantedBook, "03/24/2017", "05/24/2017");
@@ -62,13 +62,13 @@ public class Main {
 				}
 				System.out.println(library);
 			}
-			
-			{	
+
+			{
 				// Return the book
 				wantedBook.returnBook(library);
 				System.out.println(library);
 			}
-			
+
 			{
 				// Issue the borrow request with new dates
 				boolean isRented = library.rentRequest(wantedBook, "03/9/2017", "03/14/2017");
@@ -84,7 +84,6 @@ public class Main {
 		 * library, rent the book from that library
 		 */
 		System.out.println("\n\n *" + " TASK 4 " + "*");
-		
 
 		/* TASK 5 - calculate maximum value tag for each library */
 		System.out.println("\n\n *" + " TASK 5 " + "*");
@@ -100,21 +99,24 @@ public class Main {
 		System.out.println("\n\n *" + " TASK 6 " + "*");
 		final Book issuedBook = new Book("Java: The Complete Reference Ninth Edition", 45);
 		issuedBook.rentBook("03/09/2017", "03/10/2017", ls.libraries[1]);
-		
+
 		// Is it borrowed?
 		boolean isRented = issuedBook.isRented(ls.libraries[1]);
 		System.out.println("Is the book rented: " + (isRented ? "yes" : "no"));
-		
+
 		// Is it overdue?
 		boolean isOverdue = issuedBook.isBookOverdue();
 		System.out.println("Is it overdue: " + (isOverdue ? "yes" : "no"));
-		
-		//Could it be found in more than one library? 
-		//TODO: need to change method signature in Libraries isThereBookInLibraries to return an array of Library
-		
-		
-		// When can it be borrowed? TODO: how can know in case of overdue? Someone keep the book for 2 or 3 days more?
+
+		// Could it be found in more than one library?
+		// TODO: need to change method signature in Libraries
+		// isThereBookInLibraries to return an array of Library
+
+		// When can it be borrowed? TODO: how can know in case of overdue?
+		// Someone keep the book for 2 or 3 days more?
 		final String avalableTime = issuedBook.availableDate(ls.libraries[1]);
-		System.out.println("Available from: " + avalableTime);
+		if (avalableTime != null) {
+			System.out.println("Available from: " + avalableTime);
+		}
 	}
 }
