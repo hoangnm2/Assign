@@ -65,7 +65,7 @@ public class Helper {
         return dateFormat.format(date);
     }
 
-    public static String printAvailable(Book book, String rentDate, Library library) {
+    public static String printAvailable(Book book, String rentDate, Library<Book> library) {
         return "Book (" + book.bookName + ", "+ book.valueTag +") is availble at " +
                 rentDate + " from library: " + library.libraryName;
     }

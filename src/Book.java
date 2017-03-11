@@ -7,7 +7,7 @@ class Book {
 
 	String bookName; // the book name
 	int valueTag; // an integer between -100 and 100
-	Library library; // the library having this book it its inventory
+	Library<Book> library; // the library having this book it its inventory
 	RentSettings rs; // rent settings
 
 	public Book(String bookName, int valueTag) {
@@ -19,7 +19,7 @@ class Book {
 	// return false,
 	// if rentDate > dueDate catch RentPeriodException and return false
 	// if one the exceptions occur there is no RentSettings object
-	public boolean rentBook(String rentDate, String dueDate, Library library) {
+	public boolean rentBook(String rentDate, String dueDate, Library<?> library2) {
 		// Validate: return false if rentDate or dueDate are not valid
 		if (!Helper.isValidDate(rentDate) || !Helper.isValidDate(dueDate)) {
 			System.err.println("Rent date or Due date is not valid.");
@@ -44,7 +44,7 @@ class Book {
 		// false
 		RentSettings rs;
 		try {
-			rs = this.new RentSettings(rentDate, dueDate, library);
+			rs = this.new RentSettings(rentDate, dueDate, library2);
 			rs.borrowed = true;
 		} catch (RentPeriodException | DateFormatException e) {
 			return false;
@@ -56,7 +56,7 @@ class Book {
 	}
 
 	// destroy the RentSettings object for this book
-	public void returnBook(Library library) {
+	public void returnBook(Library<Book> library) {
 		
 		// Validate to check if library contains any book
 		if (library.getBooks() == null || library.getBooks().size() == 0) {
@@ -74,7 +74,7 @@ class Book {
 	}
 
 	// return the date when this book is available
-	public String availableDate(Library library) {
+	public String availableDate(Library<Book> library) {
 		if (rs == null)
 			return Helper.getCurrentDate();
 		return rs.dueDate;
@@ -100,7 +100,7 @@ class Book {
 
 	// TODO: why pass libary here? Since many lib can have same book.
 	// TODO: This function need to be revisit
-	public boolean isRented(Library l) {
+	public boolean isRented(Library<Book> l) {
 		// The book has been rented and not yet returned
 		for (int i=0; i<l.getBooks().size(); i++) {
 			final Book book = (Book) l.getBooks().get(i);
@@ -153,11 +153,11 @@ class Book {
 		return valueTag;
 	}
 
-	public Library getLibrary() {
+	public Library<Book> getLibrary() {
 		return library;
 	}
 
-	public void setLibrary(Library library) {
+	public void setLibrary(Library<Book> library) {
 		this.library = library;
 	}
 
@@ -167,7 +167,7 @@ class Book {
 		private String dueDate; // date when the item must be returned
 		private boolean borrowed = false; // true if the item is rented
 
-		private Library library;
+		private Library<?> library;
 
 		// default ctr: daily rent
 		private RentSettings() throws DateFormatException {
@@ -176,7 +176,7 @@ class Book {
 		}
 
 		// private ctr must throw DateFormatException and RentPeriodException
-		private RentSettings(String rentDate, String dueDate, Library library)
+		private RentSettings(String rentDate, String dueDate, Library<?> library)
 				throws DateFormatException, RentPeriodException {
 
 			// Validate: if rentDate > dueDate catch RentPeriodException and

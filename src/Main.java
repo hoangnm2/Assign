@@ -15,7 +15,7 @@ public class Main {
 		{
 			System.out.println("\n\n *" + " TASK 2 " + "*");
 			Book book = new Book("C++", 20);
-			Library library = ls.isThereBookInLibraries(book);
+			Library<?> library = ls.isThereBookInLibraries(book);
 			if (library == null)
 				System.out.println(Helper.printNonexistent(book));
 			else
@@ -34,7 +34,7 @@ public class Main {
 		
 		// Ask for a book that is in a library inventory
 		Book wantedBook = new Book("Essentials of Database Management", 20);
-		Library library = ls.isThereBookInLibraries(wantedBook);
+		Library<Book> library = ls.isThereBookInLibraries(wantedBook);
 		if (library == null)
 			System.out.println(Helper.printNonexistent(wantedBook));
 		else {
@@ -88,7 +88,7 @@ public class Main {
 
 		/* TASK 5 - calculate maximum value tag for each library */
 		System.out.println("\n\n *" + " TASK 5 " + "*");
-		for (final Library lib : ls.libraries) {
+		for (final Library<?> lib : ls.libraries) {
 			int maxTagValue = lib.findMaximumValueTag();
 			System.out.println(lib.getLibraryName() + ": " + maxTagValue);
 		}

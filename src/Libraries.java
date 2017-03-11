@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Libraries {
 
-	public Library[] libraries; // a collection of libraries of type array
+	public Library<Book>[] libraries; // a collection of libraries of type array
 	public int numberOfLibraries; // number of libraries in collection
 	
 	public Libraries(int numOfLibraries) {
@@ -12,9 +12,9 @@ public class Libraries {
 		numberOfLibraries = 0; 
 	}
 
-	public Library buildLibraryFromFile(String libraryName, String fileName) {
+	public Library<Book> buildLibraryFromFile(String libraryName, String fileName) {
 
-		Library library = new Library(libraryName);
+		Library<Book> library = new Library<Book>(libraryName);
 
 		String path = System.getProperty("user.dir");
 		Book book = null;
@@ -52,12 +52,12 @@ public class Libraries {
 
 	// TODO: 2 library can have same book? Have to change class def here
 	//  look for the same book in all libraries and return all the libraries where the book is in the library inventory
-	public Library isThereBookInLibraries(Book book) {
+	public Library<Book> isThereBookInLibraries(Book book) {
 		if (book == null || book.getBookName() == null) {
 			System.err.println("Bad input. Cant search for non-exist book.");
 			return null;
 		}
-		for (final Library lib : libraries) {
+		for (final Library<Book> lib : libraries) {
 			//TODO: how 2 books considered equal
 			for (int i=0; i<lib.getBooks().size(); i++) {
 				final Book bk = (Book) lib.getBooks().get(i);
@@ -73,9 +73,9 @@ public class Libraries {
 		return null;
 	}
 
-	public Library rentBookAvailable(Book book, String requestDate, String dueDate) {
+	public Library<Book> rentBookAvailable(Book book, String requestDate, String dueDate) {
 		
-		Library foundLibrary = null;
+		Library<Book> foundLibrary = null;
 
 		return foundLibrary;
 	}
@@ -84,7 +84,7 @@ public class Libraries {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder(); 
 		sb.append("Libraries: ").append(numberOfLibraries).append("\n");
-		for (final Library lib : libraries) {
+		for (final Library<Book> lib : libraries) {
 			sb.append(lib).append("\n");
 		}
 		return sb.toString();
