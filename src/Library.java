@@ -86,21 +86,6 @@ public class Library<T> implements MaxTagValue {
 	public void editBook(int index, T book) {
 		books.set(index, book);
 	}
-	
-	/**
-	 * Check if library has a specific book or not
-	 * @param book
-	 * @return
-	 */
-	public boolean hasBook(Book book) {
-		for (T bk : books) {
-			Book curBook = (Book) bk;
-			if (curBook != null && curBook.getBookName() != null && curBook.getBookName().equals(book.getBookName())) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	@Override
 	public String toString() {
