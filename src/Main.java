@@ -11,7 +11,7 @@ public class Main {
 		Libraries ls = new Libraries(2);
 
 		ls.buildLibraryFromFile("Newnham", "NewnhamLibrary.txt");
-		ls.buildLibraryFromFile("York", "YorkLibrary.txt");
+		ls.buildLibraryFromFile("Seneca@York", "YorkLibrary.txt");
 		System.out.println(ls);
 
 		/* TASK 2 - ask for a book that is not in any library inventory */
@@ -84,7 +84,7 @@ public class Main {
 		System.out.println("--------------------------------------------------------------");
 		{
 			final Book bookToRent = new Book("SQL Server", 60);
-			
+
 			Library<Book> library2;
 			final List<Library<?>> availableBookInLibs = new LinkedList<Library<?>>();
 			while ((library2 = ls.rentBookAvailable(bookToRent, "5/1/2017", "5/5/2017")) != null) {
@@ -92,7 +92,7 @@ public class Main {
 				library2.rentRequest(bookToRent, "5/1/2017", "5/5/2017");
 			}
 			ls.rentBookAvailable(bookToRent, "5/1/2017", "5/5/2017");
-			
+
 			System.out.println(
 					"All the libraries where the book '" + bookToRent.getBookName() + "' is available to be borrowed:");
 			for (Library lib : availableBookInLibs) {
@@ -114,26 +114,33 @@ public class Main {
 		 * available, etc.
 		 */
 		System.out.println("\n\n *" + " TASK 6 " + "*");
-		final Book issuedBook = new Book("Java: The Complete Reference Ninth Edition", 45);
-		issuedBook.rentBook("03/09/2017", "03/10/2017", ls.libraries[1]);
+		{
+			final Book issuedBook = new Book("Java: The Complete Reference Ninth Edition", 45);
+			Library<Book> lib1 = ls.isThereBookInLibraries(issuedBook);
+			lib1.rentRequest(issuedBook, "03/09/2017", "04/19/2017");
 
-		// Is it borrowed?
-		boolean isRented = issuedBook.isRented(ls.libraries[1]);
-		System.out.println("Is the book rented: " + (isRented ? "yes" : "no"));
+			// Is it borrowed?
+			boolean isRented = issuedBook.isRented(lib1);
+			System.out.println("Is the book rented: " + (isRented ? "yes" : "no"));
 
-		// Is it overdue?
-		boolean isOverdue = issuedBook.isBookOverdue();
-		System.out.println("Is it overdue: " + (isOverdue ? "yes" : "no"));
+			// Is it overdue?
+			boolean isOverdue = issuedBook.isBookOverdue();
+			System.out.println("Is it overdue: " + (isOverdue ? "yes" : "no"));
 
-		// Could it be found in more than one library?
-		// TODO: need to change method signature in Libraries
-		// isThereBookInLibraries to return an array of Library
+			// Could it be found in more than one library?
+			System.out.print("Could it be found in more than one library: ");
+			Library<Book> libr = ls.isThereBookInLibraries(issuedBook);
+			if (libr != null) {
+				System.out.println("Yes. It also can be rented from " + libr.getLibraryName() + ".");
+			} else {
+				System.out.println("No. Currently there is no library that have this book available.");
+			};
 
-		// When can it be borrowed? TODO: how can know in case of overdue?
-		// Someone keep the book for 2 or 3 days more?
-		final String avalableTime = issuedBook.availableDate(ls.libraries[1]);
-		if (avalableTime != null) {
-			System.out.println("Available from: " + avalableTime);
+			// When can it be borrowed?
+			final String avalableTime = issuedBook.availableDate(ls.libraries[1]);
+			if (avalableTime != null) {
+				System.out.println("Available from: " + avalableTime);
+			}
 		}
 	}
 }

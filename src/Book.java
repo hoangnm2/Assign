@@ -26,15 +26,16 @@ class Book {
 			return false;
 		}
 
-		// Check rentDate is available. Confirmed with prof, only check if rentDate is from available date.
+		// Check rentDate is available. Confirmed with prof, only check if
+		// rentDate is from available date.
 		if (rs != null) {
-				try {
-					if (Helper.timeDifference(rs.rentDate, availableDate(library)) > 0) {
-						return false;
-					}
-				} catch (DateFormatException e) {
-					e.printStackTrace();
+			try {
+				if (Helper.timeDifference(rs.rentDate, availableDate(library)) > 0) {
+					return false;
 				}
+			} catch (DateFormatException e) {
+				e.printStackTrace();
+			}
 		}
 
 		// Validate: if rentDate > dueDate catch RentPeriodException and return
@@ -73,6 +74,7 @@ class Book {
 
 	/**
 	 * Return the date when this book is available
+	 * 
 	 * @param library
 	 * @return next available date
 	 */
@@ -93,11 +95,10 @@ class Book {
 		// Book doesnot exist
 		return null;
 	}
-	
+
 	public boolean isRentTimeAvailable(String rentDate, String dueDate) {
 		try {
-			if (!(Helper.timeDifference(rentDate, rs.dueDate) > 0 
-					&& Helper.timeDifference(dueDate, rs.rentDate) < 0)) {
+			if (!(Helper.timeDifference(rentDate, rs.dueDate) > 0 && Helper.timeDifference(dueDate, rs.rentDate) < 0)) {
 				return true;
 			}
 		} catch (DateFormatException e) {
@@ -106,10 +107,13 @@ class Book {
 		return false;
 	}
 
-	// returns true if the current date is greater than the due date
+	/**
+	 * Check if book is overdue
+	 * 
+	 * @return true if the current date is greater than the due date
+	 */
 	public boolean isBookOverdue() {
 		if (rs == null) {
-			System.err.println("Book rent settings has not been set yet.");
 			return false;
 		}
 		String currentdate = Helper.getCurrentDate();
@@ -203,6 +207,7 @@ class Book {
 
 		/**
 		 * Constructor for RentSettings
+		 * 
 		 * @param rentDate
 		 * @param dueDate
 		 * @param library
@@ -212,7 +217,8 @@ class Book {
 		private RentSettings(String rentDate, String dueDate, Library<?> library)
 				throws DateFormatException, RentPeriodException {
 
-			// Validate: if rentDate > dueDate catch RentPeriodException and return false
+			// Validate: if rentDate > dueDate catch RentPeriodException and
+			// return false
 			if (Helper.timeDifference(rentDate, dueDate) < 0) {
 				throw new RentPeriodException("Due date must be after Rent date.");
 			}
