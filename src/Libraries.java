@@ -71,6 +71,56 @@ public class Libraries {
 		
 		return null;
 	}
+	
+	/**
+	 * If a book is rented from all libraries, find a library that has this book available closest to the requested date.
+	 * @param book
+	 * @param requestDate
+	 * @return library that has this book available closest to the requested date
+	 */
+	public Library<Book> findClosestAvailableLibrary(Book book, String requestDate) {
+		if (book == null || book.getBookName() == null) {
+			System.err.println("Bad input. Cant search for non-exist book.");
+			return null;
+		}
+		
+		Library<Book> foundLibrary = null;
+		Book closestAvailableBook = null;
+		boolean isFirstSet = true;
+		for (final Library<Book> lib : libraries) {
+			//TODO: how 2 books considered equal
+			for (int i=0; i<lib.getBooks().size(); i++) {
+				final Book bk = (Book) lib.getBooks().get(i);
+				if (bk != null && book.getBookName().equalsIgnoreCase(bk.getBookName())) {
+					// If any book has not been rented from any library, return it
+					if (!bk.isRented(lib)) {
+						return lib;
+					} else { // Else return library that has this book available closest to the requested date
+						if (isFirstSet) {
+							foundLibrary = lib;
+							closestAvailableBook = book;
+							isFirstSet = false;
+						} else {
+							try {
+								double minDiff = Math.abs(Helper.timeDifference(requestDate, closestAvailableBook.availableDate(foundLibrary)));
+								double currDiff = Math.abs(Helper.timeDifference(requestDate, bk.availableDate(lib)));
+								System.out.println(minDiff + " | " + currDiff);
+								if (minDiff > currDiff) {
+									foundLibrary = lib;
+									closestAvailableBook = bk;
+								}
+							} catch (DateFormatException e) {
+								System.err.println("Error happened when compare the time.");
+								return null;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return foundLibrary;
+	}
 
 	/**
 	 * Return all the libraries where the book is available to be borrowed
@@ -114,6 +164,4 @@ public class Libraries {
 		}
 		return sb.toString();
 	}
-	
-	
 }

@@ -134,13 +134,33 @@ public class Main {
 				System.out.println("Yes. It also can be rented from " + libr.getLibraryName() + ".");
 			} else {
 				System.out.println("No. Currently there is no library that have this book available.");
-			};
+			}
+			;
 
 			// When can it be borrowed?
 			final String avalableTime = issuedBook.availableDate(ls.libraries[1]);
 			if (avalableTime != null) {
 				System.out.println("Available from: " + avalableTime);
 			}
+		}
+
+		/*
+		 * TASK 7 - If a book is rented from all libraries, find a library that
+		 * has this book available closest to the requested date
+		 */
+		System.out.println("\n\n *" + " TASK 7 " + "*");
+		{
+			final Book issuedBook = new Book("Java Security Codebook", 0);
+			
+			Library<Book> lib1 = ls.isThereBookInLibraries(issuedBook);
+			lib1.rentRequest(issuedBook, "04/2/2017", "04/05/2017");
+			
+			Library<Book> lib2 = ls.isThereBookInLibraries(issuedBook);
+			lib2.rentRequest(issuedBook, "04/1/2017", "04/10/2017");
+			
+			//TODO: what closest mean, nearest?
+			Library<Book> closestAvailableLib = ls.findClosestAvailableLibrary(issuedBook, "04/9/2017");
+			System.out.println("Library that has this book available closest to the requested date: " + closestAvailableLib.getLibraryName());
 		}
 	}
 }
