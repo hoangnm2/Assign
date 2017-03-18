@@ -53,44 +53,57 @@ public class Main {
 			// Return the book
 			wantedBook.returnBook(library);
 
-			// Issue the borrow request with new dates (TODO: why new dates here? Does it matter?)
+			// Issue the borrow request with new dates (TODO: why new dates
+			// here? Does it matter?)
 			library.rentRequest(wantedBook, "03/9/2017", "03/14/2017");
 		}
-		
+
 		/*
 		 * TASK 4 - ask for the same book in all libraries if you can find a
 		 * library, rent the book from that library
 		 */
 		System.out.println("\n\n *" + " TASK 4 " + "*");
-		final Book bookToRent = new Book("Lambra expression for Java 8",60);
-		final List<Library<?>> isThereBookInLibs = new LinkedList<Library<?>>();
-		
-		Library<Book> library1;
-		while ((library1 = ls.isThereBookInLibraries(bookToRent)) != null) {
-			isThereBookInLibs.add(library1);
-			library1.rentRequest(bookToRent, "03/24/2017", "05/1/2017");
+
+		{
+			final Book bookToRent = new Book("Lambra expression for Java 8", 60);
+
+			final List<Library<?>> isThereBookInLibs = new LinkedList<Library<?>>();
+
+			Library<Book> library1;
+			while ((library1 = ls.isThereBookInLibraries(bookToRent)) != null) {
+				isThereBookInLibs.add(library1);
+				library1.rentRequest(bookToRent, "03/24/2017", "05/1/2017");
+			}
+
+			System.out.println("All the libraries that having the book '" + bookToRent.getBookName() + "':");
+			for (Library l : isThereBookInLibs) {
+				System.out.println(l.getLibraryName());
+			}
 		}
-		
-		System.out.println("All the libraries that having the book '" + bookToRent.getBookName() + "':");
-		for (Library l : isThereBookInLibs) {
-			System.out.println(l.getLibraryName());
-		}
-		
+
 		System.out.println("--------------------------------------------------------------");
-		
-		// Rent a book 
-		ls.libraries[1].rentRequest(bookToRent, "5/1/2017", "5/5/2017");
-		
-		System.out.println("All the libraries where the book '" + bookToRent.getBookName() + "' is available to be borrowed:");
-		ls.rentBookAvailable(bookToRent, "5/1/2017", "5/5/2017");
-		for (Library lib : ls.foundLibs) {
-			System.out.println(lib.getLibraryName());
+		{
+			final Book bookToRent = new Book("SQL Server", 60);
+			
+			Library<Book> library2;
+			final List<Library<?>> availableBookInLibs = new LinkedList<Library<?>>();
+			while ((library2 = ls.rentBookAvailable(bookToRent, "5/1/2017", "5/5/2017")) != null) {
+				availableBookInLibs.add(library2);
+				library2.rentRequest(bookToRent, "5/1/2017", "5/5/2017");
+			}
+			ls.rentBookAvailable(bookToRent, "5/1/2017", "5/5/2017");
+			
+			System.out.println(
+					"All the libraries where the book '" + bookToRent.getBookName() + "' is available to be borrowed:");
+			for (Library lib : availableBookInLibs) {
+				System.out.println(lib.getLibraryName());
+			}
 		}
 		System.out.println("--------------------------------------------------------------");
-		
 
 		/* TASK 5 - calculate maximum value tag for each library */
 		System.out.println("\n\n *" + " TASK 5 " + "*");
+		System.out.println("The greatest value tag of all the books from each library:");
 		for (final Library<?> lib : ls.libraries) {
 			int maxTagValue = lib.findMaximumValueTag();
 			System.out.println(lib.getLibraryName() + ": " + maxTagValue);

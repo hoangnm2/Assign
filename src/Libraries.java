@@ -9,8 +9,6 @@ public class Libraries {
 	public Library<Book>[] libraries; // a collection of libraries of type array
 	public int numberOfLibraries; // number of libraries in collection
 	
-	public List<Library<Book>> foundLibs = new ArrayList<>();
-	
 	public Libraries(int numOfLibraries) {
 		libraries = new Library[numOfLibraries];
 		numberOfLibraries = 0; 
@@ -90,25 +88,23 @@ public class Libraries {
 			return null;
 		}
 		
-		Library<Book> foundLibrary = null;
 		for (final Library<Book> lib : libraries) {
 			//TODO: how 2 books considered equal
 			for (int i=0; i<lib.getBooks().size(); i++) {
 				final Book bk = (Book) lib.getBooks().get(i);
 				if (bk != null && book.getBookName().equalsIgnoreCase(bk.getBookName())) {
 					if (bk.rs == null) {
-						// Task 7, if rs is not set, mean that it can be rented immediately
-						foundLibs.add(lib);
+						return lib;
 					} else {
 						if (bk.isRentTimeAvailable(requestDate, dueDate)) {
-							foundLibs.add(lib);
+							return lib;
 						}
 					}
 				}
 			}
 		}
 
-		return foundLibrary;
+		return null;
 	}
 
 	@Override

@@ -7,3 +7,4 @@ Database Systems Using Oracle (2nd Edition),65
 Database System Concepts,20
 Essentials of Database Management,65
 Lambra expression for Java 8,40
+SQL Server,34
