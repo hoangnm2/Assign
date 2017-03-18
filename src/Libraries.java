@@ -1,11 +1,15 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Libraries {
 
 	public Library<Book>[] libraries; // a collection of libraries of type array
 	public int numberOfLibraries; // number of libraries in collection
+	
+	public List<Library<Book>> foundLibs = new ArrayList<>();
 	
 	public Libraries(int numOfLibraries) {
 		libraries = new Library[numOfLibraries];
@@ -62,10 +66,9 @@ public class Libraries {
 			for (int i=0; i<lib.getBooks().size(); i++) {
 				final Book bk = (Book) lib.getBooks().get(i);
 				if (bk != null && book.getBookName().equalsIgnoreCase(bk.getBookName())) {
-					//if (!bk.isRented(lib)) {
+					if (!bk.isRented(lib)) {
 						return lib;
-					//}
-					
+					}
 				}
 			}
 		}
@@ -73,9 +76,37 @@ public class Libraries {
 		return null;
 	}
 
+	/**
+	 * Return all the libraries where the book is available to be borrowed
+	 * @param book
+	 * @param requestDate
+	 * @param dueDate
+	 * @return
+	 */
 	public Library<Book> rentBookAvailable(Book book, String requestDate, String dueDate) {
+		// Validation
+		if (book == null || book.getBookName() == null) {
+			System.err.println("Bad input. Cant search for non-exist book.");
+			return null;
+		}
 		
 		Library<Book> foundLibrary = null;
+		for (final Library<Book> lib : libraries) {
+			//TODO: how 2 books considered equal
+			for (int i=0; i<lib.getBooks().size(); i++) {
+				final Book bk = (Book) lib.getBooks().get(i);
+				if (bk != null && book.getBookName().equalsIgnoreCase(bk.getBookName())) {
+					if (bk.rs == null) {
+						// Task 7, if rs is not set, mean that it can be rented immediately
+						foundLibs.add(lib);
+					} else {
+						if (bk.isRentTimeAvailable(requestDate, dueDate)) {
+							foundLibs.add(lib);
+						}
+					}
+				}
+			}
+		}
 
 		return foundLibrary;
 	}

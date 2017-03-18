@@ -1,6 +1,7 @@
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Helper {
@@ -63,6 +64,25 @@ public class Helper {
         //get current date time with Date()
         Date date = new Date();
         return dateFormat.format(date);
+    }
+    
+    public static String getNextDate(String dateAsStr) {
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        
+        
+        Date date = new Date();
+		try {
+			date = dateFormat.parse(dateAsStr);
+		} catch (ParseException e) {
+			System.out.println("Error parsing date, will consider it as current date.");
+		}
+        
+        // Increase date by 1
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        
+        return dateFormat.format(calendar.getTime()); 
     }
 
     public static String printAvailable(Book book, String rentDate, Library<Book> library) {

@@ -19,76 +19,91 @@ class Book {
 	// return false,
 	// if rentDate > dueDate catch RentPeriodException and return false
 	// if one the exceptions occur there is no RentSettings object
-	public boolean rentBook(String rentDate, String dueDate, Library<?> library2) {
+	public boolean rentBook(String rentDate, String dueDate, Library<?> library) {
 		// Validate: return false if rentDate or dueDate are not valid
 		if (!Helper.isValidDate(rentDate) || !Helper.isValidDate(dueDate)) {
 			System.err.println("Rent date or Due date is not valid.");
 			return false;
 		}
 
-		// TODO: check rentDate is available. Check with prof if need to check
-		// conflict interval
+		// Check rentDate is available. Confirmed with prof, only check if rentDate is from available date.
 		if (rs != null) {
-			try {
-				if (Helper.timeDifference(rentDate, rs.dueDate) > 0 
-						&& Helper.timeDifference(dueDate, rs.rentDate) < 0) {
-					System.err.println("Rent time is overlaped.");
-					return false;
+				try {
+					if (Helper.timeDifference(rs.rentDate, availableDate(library)) > 0) {
+						return false;
+					}
+				} catch (DateFormatException e) {
+					e.printStackTrace();
 				}
-			} catch (DateFormatException e) {
-				return false;
-			}
 		}
 
 		// Validate: if rentDate > dueDate catch RentPeriodException and return
 		// false
 		RentSettings rs;
 		try {
-			rs = this.new RentSettings(rentDate, dueDate, library2);
+			rs = this.new RentSettings(rentDate, dueDate, library);
 			rs.borrowed = true;
 		} catch (RentPeriodException | DateFormatException e) {
 			return false;
 		}
 
 		this.rs = rs;
-		System.out.println(this + " was rent successfully.");
 		return true;
 	}
 
 	// destroy the RentSettings object for this book
 	public void returnBook(Library<Book> library) {
-		
+
 		// Validate to check if library contains any book
 		if (library.getBooks() == null || library.getBooks().size() == 0) {
 			System.err.println("Bad request! Library must have atleast one book.");
 		}
-		
-		
-		for (int i=0; i<library.getBooks().size(); i++) {
+
+		for (int i = 0; i < library.getBooks().size(); i++) {
 			final Book bk = (Book) library.getBooks().get(i);
 			if (bk != null && bookName.equalsIgnoreCase(bk.getBookName())) {
 				bk.rs = null;
 				library.editBook(i, bk);
+				System.out.println(
+						"Book " + bk + " in library " + library.getLibraryName() + " have been returned successfully");
+				return;
 			}
 		}
 	}
 
-	// return the date when this book is available
-	public String availableDate(Library<Book> library) {
-		for (int i=0; i<library.getBooks().size(); i++) {
+	/**
+	 * Return the date when this book is available
+	 * @param library
+	 * @return next available date
+	 */
+	public String availableDate(Library<?> library) {
+		for (int i = 0; i < library.getBooks().size(); i++) {
 			final Book book = (Book) library.getBooks().get(i);
 			if (book != null && book.getBookName() != null && book.getBookName().equals(bookName)) {
 				// If rent settings is not set, return current date
 				if (book.rs == null) {
 					return Helper.getCurrentDate();
 				} else {
-					return book.rs.dueDate;
+					// return next day
+					return Helper.getNextDate(book.rs.dueDate);
 				}
 			}
 		}
-		
+
 		// Book doesnot exist
 		return null;
+	}
+	
+	public boolean isRentTimeAvailable(String rentDate, String dueDate) {
+		try {
+			if (!(Helper.timeDifference(rentDate, rs.dueDate) > 0 
+					&& Helper.timeDifference(dueDate, rs.rentDate) < 0)) {
+				return true;
+			}
+		} catch (DateFormatException e) {
+			System.out.println("Error when checking if rent time is available.");
+		}
+		return false;
 	}
 
 	// returns true if the current date is greater than the due date
@@ -109,11 +124,14 @@ class Book {
 		return false;
 	}
 
-	// TODO: why pass libary here? Since many lib can have same book.
-	// TODO: This function need to be revisit
+	/**
+	 * Check if a book is rented or not
+	 * @param l
+	 * @return boolean
+	 */
 	public boolean isRented(Library<Book> l) {
 		// The book has been rented and not yet returned
-		for (int i=0; i<l.getBooks().size(); i++) {
+		for (int i = 0; i < l.getBooks().size(); i++) {
 			final Book book = (Book) l.getBooks().get(i);
 			if (book == null || !book.getBookName().equals(this.getBookName())) {
 				continue;
@@ -141,6 +159,9 @@ class Book {
 		return "(" + bookName + ", " + valueTag + ')';
 	}
 
+	/**
+	 * To String method for Book
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
@@ -148,7 +169,7 @@ class Book {
 		if (library != null) {
 			sb.append(" => ").append(library.getLibraryName()).append(")");
 			if (rs != null) {
-				sb.append(rs);
+				sb.append(" ").append(rs);
 			}
 		} else {
 			sb.append(")");
@@ -180,18 +201,18 @@ class Book {
 
 		private Library<?> library;
 
-		// default ctr: daily rent
-		private RentSettings() throws DateFormatException {
-			this.rentDate = Helper.getCurrentDate();
-			this.dueDate = Helper.getCurrentDate();
-		}
-
-		// private ctr must throw DateFormatException and RentPeriodException
+		/**
+		 * Constructor for RentSettings
+		 * @param rentDate
+		 * @param dueDate
+		 * @param library
+		 * @throws DateFormatException
+		 * @throws RentPeriodException
+		 */
 		private RentSettings(String rentDate, String dueDate, Library<?> library)
 				throws DateFormatException, RentPeriodException {
 
-			// Validate: if rentDate > dueDate catch RentPeriodException and
-			// return false
+			// Validate: if rentDate > dueDate catch RentPeriodException and return false
 			if (Helper.timeDifference(rentDate, dueDate) < 0) {
 				throw new RentPeriodException("Due date must be after Rent date.");
 			}
@@ -202,12 +223,14 @@ class Book {
 
 		}
 
+		/**
+		 * To String method for RentSettings
+		 */
 		@Override
 		public String toString() {
 			return "RentSettings (" + rentDate + ", " + dueDate + ", " + library.getLibraryName() + ", " + borrowed
 					+ ")";
 		}
-		
-		
+
 	}
 }

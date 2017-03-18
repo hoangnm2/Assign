@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.List;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -41,49 +44,47 @@ public class Main {
 			System.out.println(
 					"Book '" + wantedBook.getBookName() + "' belongs to library '" + library.getLibraryName() + "'.");
 
-			{
-				// Issue a borrow request and print the book object
-				boolean isRented = library.rentRequest(wantedBook, "03/24/2017", "05/24/2017");
-				if (isRented) {
-					System.out.println("Rented successfully.");
-				} else {
-					System.err.println("Rented failure");
-				}
-				System.out.println(library);
-			}
+			// Issue a borrow request and print the book object
+			library.rentRequest(wantedBook, "03/24/2017", "05/1/2017");
 
-			{
-				// Issue the same borrow request and print the book object
-				boolean isRented = library.rentRequest(wantedBook, "03/24/2017", "05/24/2017");
-				if (isRented) {
-					System.out.println("Rented successfully.");
-				} else {
-					System.err.println("Failed to rent");
-				}
-				System.out.println(library);
-			}
+			// Issue the same borrow request and print the book object
+			library.rentRequest(wantedBook, "04/2/2017", "05/4/2017");
 
-			{
-				// Return the book
-				wantedBook.returnBook(library);
-				System.out.println(library);
-			}
+			// Return the book
+			wantedBook.returnBook(library);
 
-			{
-				// Issue the borrow request with new dates
-				boolean isRented = library.rentRequest(wantedBook, "03/9/2017", "03/14/2017");
-				if (isRented) {
-					System.out.println(wantedBook + " is rented successfully.");
-				} else {
-					System.out.println(wantedBook + " cant be rent.");
-				}
-			}
+			// Issue the borrow request with new dates (TODO: why new dates here? Does it matter?)
+			library.rentRequest(wantedBook, "03/9/2017", "03/14/2017");
 		}
+		
 		/*
 		 * TASK 4 - ask for the same book in all libraries if you can find a
 		 * library, rent the book from that library
 		 */
 		System.out.println("\n\n *" + " TASK 4 " + "*");
+		final Book bookToRent = new Book("Lambra expression for Java 8",60);
+		final List<Library<?>> isThereBookInLibs = new LinkedList<Library<?>>();
+		final List<Library<?>> rentBookAvailableInLibs = new LinkedList<Library<?>>();
+		
+		System.out.println("All the libraries that having the book '" + bookToRent.getBookName() + "':");
+		for (Library l : ls.libraries) {
+			if (l.hasBook(bookToRent)) {
+				System.out.println(l.getLibraryName());
+				isThereBookInLibs.add(l);
+			}
+		}
+		System.out.println("--------------------------------------------------------------");
+		
+		// Rent a book 
+		ls.libraries[1].rentRequest(bookToRent, "5/1/2017", "5/5/2017");
+		
+		System.out.println("All the libraries where the book '" + bookToRent.getBookName() + "' is available to be borrowed:");
+		ls.rentBookAvailable(bookToRent, "5/1/2017", "5/5/2017");
+		for (Library lib : ls.foundLibs) {
+			System.out.println(lib.getLibraryName());
+		}
+		System.out.println("--------------------------------------------------------------");
+		
 
 		/* TASK 5 - calculate maximum value tag for each library */
 		System.out.println("\n\n *" + " TASK 5 " + "*");

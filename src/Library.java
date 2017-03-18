@@ -13,7 +13,7 @@ public class Library<T> implements MaxTagValue {
 	// Get max value tag
 	public int findMaximumValueTag() {
 		int maxElement = -100;
-		for (int i=0; i<books.size(); i++) {
+		for (int i = 0; i < books.size(); i++) {
 			final Book book = (Book) books.get(i);
 			if (book.getValueTag() > maxElement) {
 				maxElement = book.getValueTag();
@@ -50,6 +50,11 @@ public class Library<T> implements MaxTagValue {
 			// In case library owned the book
 			if (book != null && wanted.getBookName().equalsIgnoreCase(book.getBookName())) {
 				boolean isRented = book.rentBook(requestDate, dueDate, this);
+				if (isRented) {
+					System.out.println(book + " is rented successfully.");
+				} else {
+					System.out.println(book + " is not available and cant not be rented.");
+				}
 				return isRented;
 			}
 		}
@@ -72,16 +77,36 @@ public class Library<T> implements MaxTagValue {
 	public void addBook(T book) {
 		this.books.add(book);
 	}
-	
+
+	/**
+	 * To edit a book in library at current index
+	 * @param index
+	 * @param book
+	 */
 	public void editBook(int index, T book) {
 		books.set(index, book);
+	}
+	
+	/**
+	 * Check if library has a specific book or not
+	 * @param book
+	 * @return
+	 */
+	public boolean hasBook(Book book) {
+		for (T bk : books) {
+			Book curBook = (Book) bk;
+			if (curBook != null && curBook.getBookName() != null && curBook.getBookName().equals(book.getBookName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Library = ").append(libraryName).append("\n").append("[\n");
-		for (int i=0; i<books.size(); i++) {
+		for (int i = 0; i < books.size(); i++) {
 			final Book bk = (Book) books.get(i);
 			sb.append(bk).append("\n");
 		}
