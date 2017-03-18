@@ -64,15 +64,18 @@ public class Main {
 		System.out.println("\n\n *" + " TASK 4 " + "*");
 		final Book bookToRent = new Book("Lambra expression for Java 8",60);
 		final List<Library<?>> isThereBookInLibs = new LinkedList<Library<?>>();
-		final List<Library<?>> rentBookAvailableInLibs = new LinkedList<Library<?>>();
+		
+		Library<Book> library1;
+		while ((library1 = ls.isThereBookInLibraries(bookToRent)) != null) {
+			isThereBookInLibs.add(library1);
+			library1.rentRequest(bookToRent, "03/24/2017", "05/1/2017");
+		}
 		
 		System.out.println("All the libraries that having the book '" + bookToRent.getBookName() + "':");
-		for (Library l : ls.libraries) {
-			if (l.hasBook(bookToRent)) {
-				System.out.println(l.getLibraryName());
-				isThereBookInLibs.add(l);
-			}
+		for (Library l : isThereBookInLibs) {
+			System.out.println(l.getLibraryName());
 		}
+		
 		System.out.println("--------------------------------------------------------------");
 		
 		// Rent a book 
