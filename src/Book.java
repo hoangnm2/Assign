@@ -10,15 +10,25 @@ class Book {
 	Library<Book> library; // the library having this book it its inventory
 	RentSettings rs; // rent settings
 
+	/**
+	 * Constructor for Book
+	 * @param bookName
+	 * @param valueTag
+	 */
 	public Book(String bookName, int valueTag) {
 		this.bookName = bookName;
 		this.valueTag = valueTag;
 	}
 
-	// set the rent dates; if dates are not valid catch DateFormatException and
-	// return false,
-	// if rentDate > dueDate catch RentPeriodException and return false
-	// if one the exceptions occur there is no RentSettings object
+	/**
+	 * Set the rent dates; if dates are not valid catch DateFormatException and
+	 * return false, if rentDate > dueDate catch RentPeriodException and return false
+	 * if one the exceptions occur there is no RentSettings object
+	 * @param rentDate
+	 * @param dueDate
+	 * @param library
+	 * @return
+	 */
 	public boolean rentBook(String rentDate, String dueDate, Library<?> library) {
 		// Validate: return false if rentDate or dueDate are not valid
 		if (!Helper.isValidDate(rentDate) || !Helper.isValidDate(dueDate)) {
@@ -52,7 +62,10 @@ class Book {
 		return true;
 	}
 
-	// destroy the RentSettings object for this book
+	/**
+	 * Destroy the RentSettings object for this book
+	 * @param library
+	 */
 	public void returnBook(Library<Book> library) {
 
 		// Validate to check if library contains any book
@@ -96,6 +109,12 @@ class Book {
 		return null;
 	}
 
+	/**
+	 * Check if rent time is overlap with previous rent settings
+	 * @param rentDate
+	 * @param dueDate
+	 * @return boolean
+	 */
 	public boolean isRentTimeAvailable(String rentDate, String dueDate) {
 		try {
 			if (!(Helper.timeDifference(rentDate, rs.dueDate) > 0 && Helper.timeDifference(dueDate, rs.rentDate) < 0)) {
@@ -163,6 +182,62 @@ class Book {
 		return "(" + bookName + ", " + valueTag + ')';
 	}
 
+	public String getBookName() {
+		return bookName;
+	}
+
+	public int getValueTag() {
+		return valueTag;
+	}
+
+	public Library<Book> getLibrary() {
+		return library;
+	}
+
+	public void setLibrary(Library<Book> library) {
+		this.library = library;
+	}
+	
+	/**
+	 * Override hashcode for Book object
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bookName == null) ? 0 : bookName.hashCode());
+		result = prime * result + ((library == null) ? 0 : library.hashCode());
+		result = prime * result + valueTag;
+		return result;
+	}
+
+	/**
+	 * Override hashcode for Book object
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (bookName == null) {
+			if (other.bookName != null)
+				return false;
+		} else if (!bookName.equals(other.bookName))
+			return false;
+		if (library == null) {
+			if (other.library != null)
+				return false;
+		} else if (!library.equals(other.library))
+			return false;
+		if (valueTag != other.valueTag)
+			return false;
+		return true;
+	}
+
 	/**
 	 * To String method for Book
 	 */
@@ -179,22 +254,6 @@ class Book {
 			sb.append(")");
 		}
 		return sb.toString();
-	}
-
-	public String getBookName() {
-		return bookName;
-	}
-
-	public int getValueTag() {
-		return valueTag;
-	}
-
-	public Library<Book> getLibrary() {
-		return library;
-	}
-
-	public void setLibrary(Library<Book> library) {
-		this.library = library;
 	}
 
 	private class RentSettings {

@@ -159,7 +159,7 @@ public class Main {
 			lib2.rentRequest(issuedBook, "04/1/2017", "04/10/2017");
 			
 			//TODO: what closest mean, nearest?
-			Library<Book> closestAvailableLib = ls.findClosestAvailableLibrary(issuedBook, "04/9/2017");
+			Library<Book> closestAvailableLib = ls.findClosestAvailableLibrary(issuedBook, "04/3/2017");
 			System.out.println("Library that has this book available closest to the requested date: " + closestAvailableLib.getLibraryName());
 		}
 	}
