@@ -1,3 +1,8 @@
+/**
+ * MaxTagValue interface
+ * @author Hoang Nguyen Minh
+ *
+ */
 public interface MaxTagValue {
 
     /**

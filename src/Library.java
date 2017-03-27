@@ -1,5 +1,11 @@
 import java.util.LinkedList;
 
+/**
+ * Library class represent for one Library in the city
+ * @author Hoang Nguyen Minh
+ *
+ * @param <T>
+ */
 public class Library<T> implements MaxTagValue {
 
 	String libraryName;
@@ -135,6 +141,9 @@ public class Library<T> implements MaxTagValue {
 		return true;
 	}
 
+	/**
+	 * To String method for library
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();

@@ -256,6 +256,11 @@ class Book {
 		return sb.toString();
 	}
 
+	/**
+	 * The sub class RentSettings
+	 *
+	 * @author Hoang Nguyen Minh
+	 */
 	private class RentSettings {
 
 		private String rentDate; // date when the item is requested

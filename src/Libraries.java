@@ -3,6 +3,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Libraries class to manage all libraries in the city
+ * @author Hoang Nguyen Minh
+ *
+ */
 public class Libraries {
 
 	public Library<Book>[] libraries; // a collection of libraries of type array

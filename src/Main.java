@@ -1,6 +1,11 @@
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Main class
+ * @author Hoang Nguyen Minh
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) {
