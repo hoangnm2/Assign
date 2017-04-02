@@ -51,10 +51,12 @@ public class Library<T> implements MaxTagValue {
 			System.err.println("Requested book is invalid.");
 			return false;
 		}
-
-		// Validate date format
-		if (!Helper.isValidDate(requestDate) || !Helper.isValidDate(dueDate)) {
-			System.err.println("Rent date or Due date is not valid.");
+				
+		try {
+			Helper.checkDate(requestDate);
+			Helper.checkDate(dueDate);
+		} catch (DateFormatException e) {
+			System.out.println(wanted + e.getMessage());
 			return false;
 		}
 

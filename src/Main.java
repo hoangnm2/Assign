@@ -52,14 +52,13 @@ public class Main {
 			// Issue a borrow request and print the book object
 			library.rentRequest(wantedBook, "03/24/2017", "05/1/2017");
 
-			// Issue the same borrow request and print the book object
-			library.rentRequest(wantedBook, "04/2/2017", "05/4/2017");
+			// Issue the same borrow request and print the book object, since the time is rented and not available until 05/02
+			library.rentRequest(wantedBook, "04/29/2017", "05/4/2017");
 
 			// Return the book
 			wantedBook.returnBook(library);
 
-			// Issue the borrow request with new dates (TODO: why new dates
-			// here? Does it matter?)
+			// Issue the borrow request with new dates. Since the book has been returned, we can rent it immediately
 			library.rentRequest(wantedBook, "03/9/2017", "03/14/2017");
 		}
 

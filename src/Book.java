@@ -40,7 +40,7 @@ class Book {
 		// rentDate is from available date.
 		if (rs != null) {
 			try {
-				if (Helper.timeDifference(rs.rentDate, availableDate(library)) > 0) {
+				if (Helper.timeDifference(rentDate, availableDate(library)) >= 0) {
 					return false;
 				}
 			} catch (DateFormatException e) {
