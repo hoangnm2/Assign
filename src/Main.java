@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		/* TASK 1 - build libraries from files - at least two libraries */
+		/* TASK 1 irohangharat- build libraries from files - at least two libraries */
 
 		System.out.println("\n\n *" + " TASK 1 " + "*");
 		Libraries ls = new Libraries(2);
